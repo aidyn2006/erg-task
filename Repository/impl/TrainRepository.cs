@@ -22,7 +22,7 @@ public class TrainRepository : ITrainRepository
             .ToListAsync();
     }
 
-    public async Task<Train> GetByIdAsync(int id)
+    public async Task<Train?> GetByIdAsync(int id)
     {
         return await _context.Trains
             .Include(t => t.TrainHistory)

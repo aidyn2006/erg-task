@@ -152,3 +152,5 @@ C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\refint\ERG-Task.d
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.pdb
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.genruntimeconfig.cache
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ref\ERG-Task.dll
+C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.sourcelink.json

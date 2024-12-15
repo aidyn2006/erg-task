@@ -1,5 +1,6 @@
 using ERG_Task.Data;
 using ERG_Task.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ERG_Task.Repository.impl;
 
@@ -12,28 +13,38 @@ public class EventRepository : IEventRepository
         _context = context;
     }
 
-    public Task<IEnumerable<Event>> GetAllAsync()
+    public async Task<IEnumerable<Event>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Events
+            .Include(g=>g.EventHistories)
+            .ToListAsync();
     }
 
-    public Task<Event> GetByIdAsync(int id)
+    public async Task<Event?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Events
+            .Include(g=>g.EventHistories)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public Task AddAsync(Train train)
+    public async Task AddAsync(Event invoice)
     {
-        throw new NotImplementedException();
+        await _context.Events.AddAsync(invoice);
+        await _context.SaveChangesAsync();    
     }
 
-    public Task UpdateAsync(Train train)
+    public async Task UpdateAsync(Event invoice)
     {
-        throw new NotImplementedException();
-    }
+        _context.Events.Update(invoice);
+        await _context.SaveChangesAsync();    }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var invoice = await _context.Events.FindAsync(id);
+        if (invoice != null)
+        {
+            _context.Events.Remove(invoice);
+            await _context.SaveChangesAsync();
+        }    
     }
 }
