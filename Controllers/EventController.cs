@@ -9,7 +9,6 @@ public class EventController : Controller
 {
  
     [HttpGet]
-    [HttpGet("{id}")]
     [SwaggerResponse(200, Description = "Успешный ответ с объектом типа Item.")]
     [SwaggerResponse(404, null, Description = "Элемент не найден.")]
     public IActionResult GetAll()

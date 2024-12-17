@@ -24,6 +24,7 @@ public class PackageRepository : IPackageRepository
     public async Task<Package> GetByIdAsync(int id)
     {
         return await _context.Packages
+            .Include(s => s.Events)
             .Include(p => p.Packages) 
             .FirstOrDefaultAsync(p => p.Id == id);
     }

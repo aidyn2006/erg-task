@@ -154,3 +154,5 @@ C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.genrunti
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ref\ERG-Task.dll
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.sourcelink.json
+C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

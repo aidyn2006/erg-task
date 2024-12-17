@@ -16,5 +16,4 @@ public class EventHistory
     public float Initial_Dimension_X { get; set; }
     public float Final_Dimension_X { get; set; }
     public string? Comment { get; set; }
-
 }

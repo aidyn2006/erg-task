@@ -1,6 +1,8 @@
 using ERG_Task.Data;
 using ERG_Task.Repository;
 using ERG_Task.Repository.impl;
+using ERG_Task.Services;
+using ERG_Task.Services.impl;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +25,12 @@ builder.Services.AddScoped<ITrainRepository, TrainRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 
-
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IGenealogyService, GenealogyService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IPackageService, PackageService>();
+builder.Services.AddScoped<ISupplyService, SupplyService>();
+builder.Services.AddScoped<ITrainService, TrainService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -53,7 +60,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigins");
-
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapControllers();
 app.Run();
 
