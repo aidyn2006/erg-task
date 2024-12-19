@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using ERG_Task.DTOs;
+using ERG_Task.Models;
 using ERG_Task.Services.impl;
 
 namespace ERG_Task.Controllers
@@ -87,6 +88,15 @@ namespace ERG_Task.Controllers
         public async Task<string> DeleteSupply([FromRoute] int id)
         {
             return await _supplyService.DeleteSupplyAsync(id);
+        }
+        [HttpGet("/year/{year}")]
+        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
+        [SwaggerResponse(204, Description = "Events deleted successfully.")]
+        [SwaggerResponse(404, Description = "Event not found.")]
+        [SwaggerResponse(500, Description = "Internal server error.")]
+        public async Task<List<Supply>> GetEventByTypeIdAsync([FromRoute] int year)
+        {
+            return _supplyService.GetSupplysByYearAsync(year).Result;
         }
     }
 }

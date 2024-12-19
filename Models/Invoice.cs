@@ -1,3 +1,5 @@
+using ERG_Task.utils;
+
 namespace ERG_Task.Models;
 
 public class Invoice
@@ -7,7 +9,7 @@ public class Invoice
     public DateTime DateInvoice { get; set; }
     public DateTime DateShipping { get; set; }
     public DateTime DateCreate { get; set; }
-    public int TypeId { get; set; }
+    public TypeId TypeId { get; set; }
     public ICollection<InvoiceHistory> InvoiceHistories { get; set; } = new List<InvoiceHistory>();
     public ICollection<Event> Events { get; set; } = new List<Event>();
 

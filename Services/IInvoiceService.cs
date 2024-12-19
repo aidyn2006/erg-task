@@ -10,4 +10,7 @@ public interface IInvoiceService
     public Task<List<Invoice>> GetInvoiceAsync();
     public Task<Invoice> UpdateInvoiceAsync(int id, InvoiceDto invoiceDto);
     public Task<string> DeleteInvoiceAsync(int id);
+    public Task<List<Invoice>> GetEventsByYearAsync(int year);
+    public Task<List<Invoice>> GetEventsByTypeIdAsync(int type);
+    
 }

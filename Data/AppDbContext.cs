@@ -1,5 +1,7 @@
 using ERG_Task.Models;
+using ERG_Task.utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ERG_Task.Data
 {
@@ -20,7 +22,6 @@ namespace ERG_Task.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
         }
     }
 }

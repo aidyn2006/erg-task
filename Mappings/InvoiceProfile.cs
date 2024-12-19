@@ -9,5 +9,6 @@ public class InvoiceProfile : Profile
     {
         CreateMap<Invoice, InvoiceDto>();
         CreateMap<InvoiceDto, Invoice>();
+        CreateMap<Invoice, InvoiceHistory>();
     }
 }

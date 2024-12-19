@@ -36,15 +36,15 @@ builder.Services.AddScoped<ITrainService, TrainService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigins", policy =>
-    {
-        policy.WithOrigins("http://localhost:63343") 
-            .AllowAnyMethod()                     
-            .AllowAnyHeader();                    
-    });
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowSpecificOrigins", policy =>
+//     {
+//         policy.WithOrigins("http://localhost:63343") 
+//             .AllowAnyMethod()                     
+//             .AllowAnyHeader();                    
+//     });
+// });
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

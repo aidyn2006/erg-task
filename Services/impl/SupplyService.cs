@@ -74,5 +74,17 @@ public class SupplyService : ISupplyService
             throw new KeyNotFoundException($"Supply with id: {id} was not found.");
         }
         await _supplyRepository.DeleteAsync(id);
-        return "Succesfuly deleted";    }
+        return "Succesfuly deleted";    
+    }
+
+    public async Task<List<Supply>> GetSupplysByYearAsync(int year)
+    {
+        var supplies = await _supplyRepository.GetAllAsync();
+        supplies = supplies.Where(s => s.DateCreate.Year == year).ToList();
+
+        return supplies.ToList();
+    }
+    
+
+    
 }

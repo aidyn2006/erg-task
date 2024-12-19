@@ -9,5 +9,7 @@ public interface ISupplyService
     public Task<Supply> GetSupplyByIdAsync(int id);
     public Task<List<Supply>> GetSupplyAsync();
     public Task<Supply> UpdateSupplyAsync(int id, SupplyDto supplyDto);
-    public Task<string> DeleteSupplyAsync(int id);  
+    public Task<string> DeleteSupplyAsync(int id);
+    
+    public Task<List<Supply>> GetSupplysByYearAsync(int year);
 }

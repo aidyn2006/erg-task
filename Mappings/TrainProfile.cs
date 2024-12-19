@@ -9,5 +9,6 @@ public class TrainProfile : Profile
     {
         CreateMap<Train, TrainDto>();
         CreateMap<TrainDto, Train>();
+        CreateMap<Train, TrainHistory>();
     }
 }

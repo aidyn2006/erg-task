@@ -9,5 +9,6 @@ public class EventProfile : Profile
     {
         CreateMap<Event, EventDto>();
         CreateMap<EventDto, Event>();
+        CreateMap<Event, EventHistory>();
     }
 }

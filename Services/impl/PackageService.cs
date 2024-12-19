@@ -4,6 +4,7 @@ using ERG_Task.Exception;
 using ERG_Task.Models;
 using ERG_Task.Repository;
 using ERG_Task.Services.impl;
+using ERG_Task.utils;
 
 namespace ERG_Task.Services;
 
@@ -96,4 +97,18 @@ public class PackageService : IPackageService
         }
         await _packageRepository.DeleteAsync(id);
         return "Succesfuly deleted";    }
+
+    public async Task<List<Package>> GetPackagesByStatusAsync(int status)
+    {
+        var events = await _packageRepository.GetAllAsync();
+        events = events.Where(s => s.StatusId == (StatusId)status).ToList();
+
+        return events.ToList();
+    }
+
+    public async Task<List<Package>> GetPackageByTypeIdAsync(int type)
+    {
+        var events = await _packageRepository.GetAllAsync();
+        events = events.Where(s => s.TypeId == (TypeId)type).ToList();
+        return events.ToList();    }
 }

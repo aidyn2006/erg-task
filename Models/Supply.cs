@@ -8,4 +8,5 @@ public class Supply
     public DateTime DateCreate { get; set; }
     public ICollection<Event> Events { get; set; } = new List<Event>();
     
+    
 }

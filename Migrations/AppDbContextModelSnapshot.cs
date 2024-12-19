@@ -57,7 +57,7 @@ namespace ERG_Task.Migrations
                     b.Property<int?>("PackageId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("integer");
 
                     b.Property<int>("StatusId")
@@ -143,6 +143,9 @@ namespace ERG_Task.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<long?>("ChildEventId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("timestamp with time zone");
 
@@ -152,13 +155,10 @@ namespace ERG_Task.Migrations
                     b.Property<long>("EventChildId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("EventIdChild")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("EventIdParent")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("EventParentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ParentEventId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");

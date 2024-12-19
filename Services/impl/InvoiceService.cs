@@ -4,6 +4,7 @@ using ERG_Task.Exception;
 using ERG_Task.Models;
 using ERG_Task.Repository;
 using ERG_Task.Services.impl;
+using ERG_Task.utils;
 
 namespace ERG_Task.Services;
 
@@ -27,15 +28,15 @@ public class InvoiceService : IInvoiceService
 
         var newInvoice = _mapper.Map<Invoice>(invoiceDto);
 
-        newInvoice.DateInvoice = DateTime.Now;
-        newInvoice.DateCreate=DateTime.Now;
-        newInvoice.DateShipping=DateTime.Now;
+        newInvoice.DateInvoice = DateTime.UtcNow;
+        newInvoice.DateCreate=DateTime.UtcNow;
+        newInvoice.DateShipping=DateTime.UtcNow;
 
         await _repository.AddAsync(newInvoice);
 
         var newInvoiceHistory = _mapper.Map<InvoiceHistory>(newInvoice);
         newInvoiceHistory.InvoiceId = newInvoice.Id;
-        newInvoiceHistory.DateModify=DateTime.Now;
+        newInvoiceHistory.DateModify=DateTime.UtcNow;
        
         await _invoiceHistoryRepository.AddAsync(newInvoiceHistory);
         
@@ -88,5 +89,20 @@ public class InvoiceService : IInvoiceService
             throw new NotFoundException($"Genealogy with id: {id} was not found.");
         }
         await _repository.DeleteAsync(id);
-        return "Succesfuly deleted";    }
+        return "Succesfuly deleted";    
+    }
+
+    public async Task<List<Invoice>> GetEventsByYearAsync(int year)
+    {
+        var events = await _repository.GetAllAsync();
+        events = events.Where(s => s.DateCreate.Year == year).ToList();
+
+        return events.ToList();
+    }
+    public async Task<List<Invoice>> GetEventsByTypeIdAsync(int type)
+    {
+        var events = await _repository.GetAllAsync();
+        events = events.Where(s => s.TypeId == (TypeId)type).ToList();
+        return events.ToList();
+    }
 }

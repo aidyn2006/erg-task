@@ -1,3 +1,6 @@
+using ERG_Task.DTOs;
+using ERG_Task.Models;
+using ERG_Task.Services.impl;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -8,13 +11,103 @@ namespace ERG_Task.Controllers;
 public class InvoiceController : Controller
 {
  
-    [HttpGet]
-    [HttpGet("{id}")]
-    [SwaggerResponse(200, Description = "Успешный ответ с объектом типа Item.")]
-    [SwaggerResponse(404, null, Description = "Элемент не найден.")]
-    public IActionResult GetAll()
+    private readonly IInvoiceService _invoiceService;
+
+    public InvoiceController(IInvoiceService invoiceService)
     {
-        return Ok();
+        _invoiceService = invoiceService;
+    }
+    
+
+    [HttpGet]
+    [SwaggerOperation(Summary = "This operation retrieves all invoices.")]
+    [SwaggerResponse(200, Description = "Successful response with a list of invoices.")]
+    [SwaggerResponse(204, Description = "No content - no invoice found.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<IActionResult> GetAll()
+    {
+        var supplies = await _invoiceService.GetInvoiceAsync();
+
+        if (supplies == null || !supplies.Any())
+        {
+            return NoContent();
+        }
+
+        return Ok(supplies);
+    }
+
+    [HttpGet("{id}")]
+    [SwaggerOperation(Summary = "This operation retrieves a invoice by ID.")]
+    [SwaggerResponse(200, Description = "Successful response with the invoice object.")]
+    [SwaggerResponse(404, Description = "Invoice not found.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<IActionResult> GetEventById([FromRoute] int id)
+    {
+        var supply = await _invoiceService.GetInvoiceByIdAsync(id);
+
+        if (supply == null)
+        {
+            return NotFound($"Invoice with ID {id} not found.");
+        }
+
+        return Ok(supply);
+    }
+
+    [HttpPost]
+    [SwaggerOperation(Summary = "This operation creates a new genealogy.")]
+    [SwaggerResponse(201, Description = "Genealogy created successfully.")]
+    [SwaggerResponse(400, Description = "Invalid input.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<IActionResult> CreateEvent([FromBody] InvoiceDto invoiceDto)
+    {
+        var createdSupply = await  _invoiceService.CreateInvoiceAsync(invoiceDto);
+        return CreatedAtAction(nameof(GetEventById), new { id = createdSupply.Id }, createdSupply);
+    }
+
+    [HttpPut("{id}")]
+    [SwaggerOperation(Summary = "This operation updates an existing invoice by ID.")]
+    [SwaggerResponse(200, Description = "Invoice updated successfully.")]
+    [SwaggerResponse(404, Description = "Invoice not found.")]
+    [SwaggerResponse(400, Description = "Invalid input.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<IActionResult> UpdateEvent([FromRoute] int id, [FromBody] InvoiceDto invoiceDto)
+    {
+        var updatedSupply = await _invoiceService.UpdateInvoiceAsync(id, invoiceDto);
+
+        if (updatedSupply == null)
+        {
+            return NotFound($"Invoice with ID {id} not found.");
+        }
+
+        return Ok(updatedSupply);
+    }
+
+    [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "This operation deletes a invoice by ID.")]
+    [SwaggerResponse(204, Description = "Invoice deleted successfully.")]
+    [SwaggerResponse(404, Description = "Invoice not found.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<string> DeleteEvent([FromRoute] int id)
+    {
+        return await _invoiceService.DeleteInvoiceAsync(id);
+    }
+    [HttpGet("/stat/{categoryId}")]
+    [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
+    [SwaggerResponse(204, Description = "Events deleted successfully.")]
+    [SwaggerResponse(404, Description = "Event not found.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<List<Invoice>> GetEventByStatusIdAsync([FromRoute] int categoryId)
+    {
+        return _invoiceService.GetEventsByTypeIdAsync(categoryId).Result;
+    }
+    [HttpGet("/year/{year}")]
+    [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
+    [SwaggerResponse(204, Description = "Events deleted successfully.")]
+    [SwaggerResponse(404, Description = "Event not found.")]
+    [SwaggerResponse(500, Description = "Internal server error.")]
+    public async Task<List<Invoice>> GetEventByYearIdAsync([FromRoute] int year)
+    {
+        return _invoiceService.GetEventsByYearAsync(year).Result;
     }
     
 }

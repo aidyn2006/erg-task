@@ -10,4 +10,9 @@ public interface IEventService
     public Task<List<Event>> GetEventsAsync();
     public Task<Event> UpdateEventAsync(int id, EventDto eventToUpdate);
     public Task<string> DeleteEventAsync(int id);
+    public Task<List<Event>> GetEventsByStatusAsync(int categoryId);
+    public Task<List<Event>> GetEventsByYearAsync(int year);
+    
+
+
 }

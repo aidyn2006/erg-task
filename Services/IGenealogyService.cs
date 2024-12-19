@@ -10,4 +10,6 @@ public interface IGenealogyService
     public Task<List<Genealogy>> GetGenealogyAsync();
     public Task<Genealogy> UpdateGenealogyAsync(int id, GenealogyDto genealogyDto);
     public Task<string> DeleteGenealogyAsync(int id);
+    public Task<List<Genealogy>> GetEventsByYearAsync(int year);
+
 }

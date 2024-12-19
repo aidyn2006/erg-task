@@ -29,7 +29,7 @@ public class GlobalExceptionMiddleware
             {
                 Status = (int)HttpStatusCode.NoContent,
                 Type = "Not Found",
-                Title = "Not found bacause doesnt exist in the database",
+                Title = "Not found because doesnt exist in the database",
                 Detail = ex.Message
             };
 

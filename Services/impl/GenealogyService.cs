@@ -79,4 +79,11 @@ public class GenealogyService : IGenealogyService
         await _genealogyRepository.DeleteAsync(id);
         return "Succesfuly deleted";
     }
+    public async Task<List<Genealogy>> GetEventsByYearAsync(int year)
+    {
+        var events = await _genealogyRepository.GetAllAsync();
+        events = events.Where(s => s.DateCreate.Year == year).ToList();
+
+        return events.ToList();
+    }
 }

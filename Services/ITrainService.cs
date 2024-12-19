@@ -10,4 +10,7 @@ public interface ITrainService
     public Task<List<Train>> GetTrainAsync();
     public Task<Train> UpdateTrainAsync(int id, TrainDto trainDto);
     public Task<string> DeleteTrainAsync(int id);  
+    public Task<List<Train>> GetTrainsByStatusAsync(int status);
+    public Task<List<Train>> GetTrainsByYearAsync(int year);
+
 }

@@ -4,6 +4,7 @@ using ERG_Task.Exception;
 using ERG_Task.Models;
 using ERG_Task.Repository;
 using ERG_Task.Services.impl;
+using ERG_Task.utils;
 
 namespace ERG_Task.Services;
 
@@ -28,7 +29,6 @@ public class TrainService : ITrainService
         var newEvent = _mapper.Map<Train>(trainDto);
 
         newEvent.DateCreate = DateTime.UtcNow;
-
         await _trainRepository.AddAsync(newEvent);
 
         var newEventHistory= _mapper.Map<TrainHistory>(newEvent);
@@ -92,4 +92,19 @@ public class TrainService : ITrainService
         }
         await _trainRepository.DeleteAsync(id);
         return "Succesfuly deleted";    }
+
+    public async Task<List<Train>> GetTrainsByStatusAsync(int status)
+    {
+        var events = await _trainRepository.GetAllAsync();
+        events = events.Where(s => s.TrainStatusId == (TrainStatusId)status).ToList();
+
+        return events.ToList();    }
+
+    public async Task<List<Train>> GetTrainsByYearAsync(int year)
+    {
+        var supplies = await _trainRepository.GetAllAsync();
+        supplies = supplies.Where(s => s.DateCreate.Year == year).ToList();
+
+        return supplies.ToList(); 
+    }
 }

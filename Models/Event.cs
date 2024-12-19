@@ -1,12 +1,14 @@
+using ERG_Task.utils;
+
 namespace ERG_Task.Models;
 
 public class Event 
 {
     public long Id { get; set; }
-    public int? ProductId { get; set; }
+    public ProductId ProductId { get; set; }
     public int? PackageId { get; set; }
     public int? InvoiceId { get; set; }
-    public int StatusId { get; set; }
+    public StatusId StatusId { get; set; }
     public int? SupplyId { get; set; }
     public DateTime DateStart { get; set; }
     public DateTime DateEvent { get; set; }

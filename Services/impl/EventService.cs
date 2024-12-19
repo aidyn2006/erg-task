@@ -4,6 +4,7 @@ using ERG_Task.Exception;
 using ERG_Task.Models;
 using ERG_Task.Repository;
 using ERG_Task.Services.impl;
+using ERG_Task.utils;
 
 namespace ERG_Task.Services;
 
@@ -103,4 +104,20 @@ public class EventService : IEventService
         await _eventRepository.DeleteAsync(id);
         return "Succesfuly deleted";
     }
+
+    public async Task<List<Event>> GetEventsByStatusAsync(int categoryId)
+    {
+        var events = await _eventRepository.GetAllAsync();
+        events = events.Where(s => s.StatusId == (StatusId)categoryId).ToList();
+        return events.ToList();
+    }
+
+    public async Task<List<Event>> GetEventsByYearAsync(int year)
+    {
+        var events = await _eventRepository.GetAllAsync();
+        events = events.Where(s => s.DateCreate.Year == year).ToList();
+
+        return events.ToList();
+    }
+    
 }

@@ -9,5 +9,6 @@ public class PackageProfile : Profile
     {
         CreateMap<Package, PackageDto>();
         CreateMap<PackageDto, Package>();
+        CreateMap<Package, PackageHistory>();
     }
 }

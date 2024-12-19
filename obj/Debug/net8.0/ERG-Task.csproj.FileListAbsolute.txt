@@ -146,7 +146,6 @@ C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\staticwebassets\m
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ERG-Task.props
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\scopedcss\bundle\ERG-Task.styles.css
-C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.csproj.CopyComplete
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.dll
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\refint\ERG-Task.dll
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.pdb
@@ -156,3 +155,4 @@ C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\Swashbuckle.AspNe
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.sourcelink.json
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Asus\RiderProjects\ERG-Task\ERG-Task\obj\Debug\net8.0\ERG-Task.csproj.CopyComplete
