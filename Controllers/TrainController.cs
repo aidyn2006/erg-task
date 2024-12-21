@@ -18,20 +18,19 @@ public class TrainController : Controller
     }
     
     
-     [HttpGet]
+        [HttpGet]
         [SwaggerOperation(Summary = "This operation retrieves all trains.")]
         [SwaggerResponse(200, Description = "Successful response with a list of trains.")]
         [SwaggerResponse(204, Description = "No content - no trains found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int? year, [FromQuery] int? status)
         {
-            var supplies = await _trainService.GetTrainAsync();
+            var supplies = await _trainService.GetTrainAsync(year,status);
 
             if (supplies == null || !supplies.Any())
             {
                 return NoContent();
             }
-
             return Ok(supplies);
         }
 
@@ -40,7 +39,7 @@ public class TrainController : Controller
         [SwaggerResponse(200, Description = "Successful response with the train object.")]
         [SwaggerResponse(404, Description = "Train not found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetEventById([FromRoute] int id)
+        public async Task<IActionResult> GetEventById([FromRoute] int id )
         {
             var supply = await _trainService.GetTrainByIdAsync(id);
 
@@ -90,22 +89,5 @@ public class TrainController : Controller
         {
             return await _trainService.DeleteTrainAsync(id);
         }
-        [HttpGet("/stat/{statusId}")]
-        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-        [SwaggerResponse(204, Description = "Events deleted successfully.")]
-        [SwaggerResponse(404, Description = "Event not found.")]
-        [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<List<Train>> GetPackageByStatusIdAsync([FromRoute] int statusId)
-        {
-            return _trainService.GetTrainsByStatusAsync(statusId).Result;
-        }
-        [HttpGet("/year/{year}")]
-        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-        [SwaggerResponse(204, Description = "Events deleted successfully.")]
-        [SwaggerResponse(404, Description = "Event not found.")]
-        [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<List<Train>> GetEventByTypeIdAsync([FromRoute] int year)
-        {
-            return _trainService.GetTrainsByYearAsync(year).Result;
-        }
+        
 }

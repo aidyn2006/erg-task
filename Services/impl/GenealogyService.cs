@@ -42,12 +42,16 @@ public class GenealogyService : IGenealogyService
         return byId;    
     }
 
-    public async Task<List<Genealogy>> GetGenealogyAsync()
+    public async Task<List<Genealogy>> GetGenealogyAsync(int? year)
     {
         var byId=await _genealogyRepository.GetAllAsync();
         if (byId == null)
         {
             throw new NotFoundException("There was no genealogy found");
+        }
+        if (year.HasValue)
+        {
+            byId=byId.Where(genealogy => genealogy.DateCreate.Year == year.Value);
         }
         return byId.ToList();
         
@@ -79,11 +83,5 @@ public class GenealogyService : IGenealogyService
         await _genealogyRepository.DeleteAsync(id);
         return "Succesfuly deleted";
     }
-    public async Task<List<Genealogy>> GetEventsByYearAsync(int year)
-    {
-        var events = await _genealogyRepository.GetAllAsync();
-        events = events.Where(s => s.DateCreate.Year == year).ToList();
-
-        return events.ToList();
-    }
+   
 }

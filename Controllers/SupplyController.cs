@@ -22,15 +22,14 @@ namespace ERG_Task.Controllers
         [SwaggerResponse(200, Description = "Successful response with a list of supplies.")]
         [SwaggerResponse(204, Description = "No content - no supplies found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int? year)
         {
-            var supplies = await _supplyService.GetSupplyAsync();
+            var supplies = await _supplyService.GetSupplyAsync(year);
 
             if (supplies == null || !supplies.Any())
             {
                 return NoContent();
             }
-
             return Ok(supplies);
         }
 
@@ -89,14 +88,6 @@ namespace ERG_Task.Controllers
         {
             return await _supplyService.DeleteSupplyAsync(id);
         }
-        [HttpGet("/year/{year}")]
-        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-        [SwaggerResponse(204, Description = "Events deleted successfully.")]
-        [SwaggerResponse(404, Description = "Event not found.")]
-        [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<List<Supply>> GetEventByTypeIdAsync([FromRoute] int year)
-        {
-            return _supplyService.GetSupplysByYearAsync(year).Result;
-        }
+       
     }
 }

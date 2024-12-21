@@ -23,15 +23,14 @@ public class GenealogyController : Controller
    [SwaggerResponse(200, Description = "Successful response with a list of genealogy.")]
    [SwaggerResponse(204, Description = "No content - no genealogy found.")]
    [SwaggerResponse(500, Description = "Internal server error.")]
-   public async Task<IActionResult> GetAll()
+   public async Task<IActionResult> GetAll([FromQuery] int? year)
    {
-       var supplies = await _genealogyService.GetGenealogyAsync();
+       var supplies = await _genealogyService.GetGenealogyAsync(year);
 
        if (supplies == null || !supplies.Any())
        {
            return NoContent();
        }
-
        return Ok(supplies);
    }
 
@@ -90,14 +89,5 @@ public class GenealogyController : Controller
    {
        return await _genealogyService.DeleteGenealogyAsync(id);
    }
-   [HttpGet("/year{year}")]
-   [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-   [SwaggerResponse(204, Description = "Events deleted successfully.")]
-   [SwaggerResponse(404, Description = "Event not found.")]
-   [SwaggerResponse(500, Description = "Internal server error.")]
-   public async Task<List<Genealogy>> GetEventByYearIdAsync([FromRoute] int year)
-   {
-       return _genealogyService.GetEventsByYearAsync(year).Result;
-   }
-    
+   
 }

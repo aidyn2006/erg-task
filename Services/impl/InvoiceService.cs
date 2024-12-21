@@ -51,14 +51,26 @@ public class InvoiceService : IInvoiceService
         }
         return byId;    }
 
-    public async Task<List<Invoice>> GetInvoiceAsync()
+    public async Task<List<Invoice>> GetInvoiceAsync(int? year, int? type)
     {
         var byId=await _repository.GetAllAsync();
         if (byId == null)
         {
             throw new NotFoundException("There was no invoices found");
         }
-        return byId.ToList();    }
+
+        if (year.HasValue)
+        {
+            byId=byId.Where(e => e.DateCreate.Year == year.Value);
+        }
+
+        if (type.HasValue)
+        {
+            byId=byId.Where(e => e.TypeId== (TypeId)type).ToList();
+        }
+        
+        return byId.ToList();    
+    }
 
     public async Task<Invoice> UpdateInvoiceAsync(int id, InvoiceDto invoiceDto)
     {
@@ -92,17 +104,5 @@ public class InvoiceService : IInvoiceService
         return "Succesfuly deleted";    
     }
 
-    public async Task<List<Invoice>> GetEventsByYearAsync(int year)
-    {
-        var events = await _repository.GetAllAsync();
-        events = events.Where(s => s.DateCreate.Year == year).ToList();
-
-        return events.ToList();
-    }
-    public async Task<List<Invoice>> GetEventsByTypeIdAsync(int type)
-    {
-        var events = await _repository.GetAllAsync();
-        events = events.Where(s => s.TypeId == (TypeId)type).ToList();
-        return events.ToList();
-    }
+  
 }

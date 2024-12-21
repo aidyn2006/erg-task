@@ -1,5 +1,6 @@
 using ERG_Task.Data;
 using ERG_Task.Models;
+using ERG_Task.utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERG_Task.Repository.impl;
@@ -13,9 +14,11 @@ public class PackageRepository : IPackageRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Package>> GetAllAsync()
+    public async Task<IEnumerable<Package>> GetAllAsync(int? type,int? status)
     {
         return await _context.Packages
+            .Where(t => (!type.HasValue || t.TypeId == (TypeId)type.Value) && 
+                        (!status.HasValue || t.StatusId == (StatusId)status.Value))
             .Include(s => s.Events)
             .Include(s=>s.Packages)
             .ToListAsync();

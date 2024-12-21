@@ -31,6 +31,7 @@ builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IPackageService, PackageService>();
 builder.Services.AddScoped<ISupplyService, SupplyService>();
 builder.Services.AddScoped<ITrainService, TrainService>();
+builder.Services.AddScoped<ICreateInstancesService, CreateInstancesService>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>

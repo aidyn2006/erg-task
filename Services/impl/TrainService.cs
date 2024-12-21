@@ -14,7 +14,8 @@ public class TrainService : ITrainService
     private readonly IMapper _mapper;
     private readonly ITrainHistoryRepository _trainHistoryRepository;
 
-    public TrainService(ITrainRepository trainRepository, IMapper mapper, ITrainHistoryRepository trainHistoryRepository)
+    public TrainService(ITrainRepository trainRepository, IMapper mapper,
+        ITrainHistoryRepository trainHistoryRepository)
     {
         _trainRepository = trainRepository;
         _mapper = mapper;
@@ -31,33 +32,45 @@ public class TrainService : ITrainService
         newEvent.DateCreate = DateTime.UtcNow;
         await _trainRepository.AddAsync(newEvent);
 
-        var newEventHistory= _mapper.Map<TrainHistory>(newEvent);
-        
+        var newEventHistory = _mapper.Map<TrainHistory>(newEvent);
+
         newEventHistory.TrainId = newEvent.Id;
         newEventHistory.DateModify = DateTime.UtcNow;
-        
+
         await _trainHistoryRepository.AddAsync(newEventHistory);
         return newEvent;
     }
 
     public async Task<Train> GetTrainByIdAsync(int id)
     {
-        var byId=await _trainRepository.GetByIdAsync(id);
+        var byId = await _trainRepository.GetByIdAsync(id);
         if (byId == null)
         {
             throw new NotFoundException($"Train with id: {id} was not found");
         }
 
-        return byId;    }
+        return byId;
+    }
 
-    public async Task<List<Train>> GetTrainAsync()
+    public async Task<List<Train>> GetTrainAsync(int? year,int? status)
     {
-        var events=await _trainRepository.GetAllAsync();
-        if (events == null)
+        var trains = await _trainRepository.GetAllAsync();
+        if (trains == null)
         {
             throw new NotFoundException("There was no trains found");
         }
-        return events.ToList();    }
+
+        if (year.HasValue)
+        {
+            trains=trains.Where(e=>e.DateCreate.Year==year.Value).ToList();
+        }
+
+        if (status.HasValue)
+        {
+         trains=trains.Where(e=>e.TrainStatusId==(TrainStatusId)status).ToList();   
+        }
+        return trains.ToList();
+    }
 
     public async Task<Train> UpdateTrainAsync(int id, TrainDto trainDto)
     {
@@ -68,20 +81,21 @@ public class TrainService : ITrainService
         }
 
         _mapper.Map(trainDto, existingEvent);
-        
+
         existingEvent.DateCreate = DateTime.UtcNow;
 
         await _trainRepository.UpdateAsync(existingEvent);
-        
-        
 
-        var newEventHistory= _mapper.Map<TrainHistory>(existingEvent);
-        
+
+
+        var newEventHistory = _mapper.Map<TrainHistory>(existingEvent);
+
         newEventHistory.TrainId = existingEvent.Id;
         newEventHistory.DateModify = DateTime.UtcNow;
-        
+
         await _trainHistoryRepository.AddAsync(newEventHistory);
-        return existingEvent;    }
+        return existingEvent;
+    }
 
     public async Task<string> DeleteTrainAsync(int id)
     {
@@ -90,21 +104,8 @@ public class TrainService : ITrainService
         {
             throw new NotFoundException($"train with id: {id} was not found.");
         }
+
         await _trainRepository.DeleteAsync(id);
-        return "Succesfuly deleted";    }
-
-    public async Task<List<Train>> GetTrainsByStatusAsync(int status)
-    {
-        var events = await _trainRepository.GetAllAsync();
-        events = events.Where(s => s.TrainStatusId == (TrainStatusId)status).ToList();
-
-        return events.ToList();    }
-
-    public async Task<List<Train>> GetTrainsByYearAsync(int year)
-    {
-        var supplies = await _trainRepository.GetAllAsync();
-        supplies = supplies.Where(s => s.DateCreate.Year == year).ToList();
-
-        return supplies.ToList(); 
+        return "Succesfuly deleted";
     }
 }

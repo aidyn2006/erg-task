@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ERG-Task")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ca34fbff1aa2e8a9153433be51cea7135e81fb5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10e899fcd8024849f7737c808cde994d71f6d391")]
 [assembly: System.Reflection.AssemblyProductAttribute("ERG-Task")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ERG-Task")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

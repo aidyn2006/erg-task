@@ -10,5 +10,5 @@ public class PackageDto
     public string? Name { get; set; }
     public TypeId TypeId { get; set; }
     public int? OrderInTrain { get; set; }
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
 }

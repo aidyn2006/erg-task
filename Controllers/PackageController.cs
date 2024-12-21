@@ -16,22 +16,20 @@ public class PackageController : Controller
     public PackageController(IPackageService packageService)
     {
         _packageService = packageService;
-    }
-    
-    [HttpGet]
+    } 
+        [HttpGet]
         [SwaggerOperation(Summary = "This operation retrieves all packages.")]
         [SwaggerResponse(200, Description = "Successful response with a list of packages.")]
         [SwaggerResponse(204, Description = "No content - no package found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int? type,[FromQuery] int? status)
         {
-            var supplies = await _packageService.GetPackageAsync();
+            var supplies = await _packageService.GetPackageAsync(type,status);
 
             if (supplies == null || !supplies.Any())
             {
                 return NoContent();
             }
-
             return Ok(supplies);
         }
 
@@ -90,22 +88,5 @@ public class PackageController : Controller
         {
             return await _packageService.DeletePackageAsync(id);
         }
-        [HttpGet("/stat/{statusId}")]
-        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-        [SwaggerResponse(204, Description = "Events deleted successfully.")]
-        [SwaggerResponse(404, Description = "Event not found.")]
-        [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<List<Package>> GetPackageByStatusIdAsync([FromRoute] int statusId)
-        {
-            return _packageService.GetPackagesByStatusAsync(statusId).Result;
-        }
-        [HttpGet("type/{typeId}")]
-        [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-        [SwaggerResponse(204, Description = "Events deleted successfully.")]
-        [SwaggerResponse(404, Description = "Event not found.")]
-        [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<List<Package>> GetEventByTypeIdAsync([FromRoute] int type)
-        {
-            return _packageService.GetPackageByTypeIdAsync(type).Result;
-        }
+        
 }

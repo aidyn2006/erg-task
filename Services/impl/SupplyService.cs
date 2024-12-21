@@ -42,12 +42,17 @@ public class SupplyService : ISupplyService
         return byId;      }
 
     
-    public async Task<List<Supply>> GetSupplyAsync()
+    public async Task<List<Supply>> GetSupplyAsync(int? year)
     {
         var byId=await _supplyRepository.GetAllAsync();
         if (byId == null)
         {
             throw new NotFoundException("There was no suppply found");
+        }
+
+        if (year.HasValue)
+        {
+            byId=byId.Where(p => p.DateCreate.Year == year.Value);
         }
         return byId.ToList();    }
 
@@ -76,14 +81,7 @@ public class SupplyService : ISupplyService
         await _supplyRepository.DeleteAsync(id);
         return "Succesfuly deleted";    
     }
-
-    public async Task<List<Supply>> GetSupplysByYearAsync(int year)
-    {
-        var supplies = await _supplyRepository.GetAllAsync();
-        supplies = supplies.Where(s => s.DateCreate.Year == year).ToList();
-
-        return supplies.ToList();
-    }
+    
     
 
     

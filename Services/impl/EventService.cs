@@ -56,13 +56,40 @@ public class EventService : IEventService
         return byId;
     }
 
-    public async Task<List<Event>> GetEventsAsync()
+    public async Task<List<Event>> GetEventsAsync(int? year,int? status, DateTime? daaStart, DateTime? dataCreate)
     {
         var events=await _eventRepository.GetAllAsync();
         if (events == null)
         {
             throw new NotFoundException("There was no events found");
         }
+
+        if (year.HasValue)
+        {
+            events = events.Where(e => e.DateCreate.Year == year.Value);
+        }
+
+        if (status.HasValue)
+        {
+            events=events.Where(e=>e.StatusId==(StatusId)status).ToList();
+        }
+
+        if (daaStart.HasValue && dataCreate.HasValue)
+        {
+            events = events.Where(e => e.DateStart >= daaStart.Value && e.DateStart <= dataCreate.Value).ToList();
+        }
+
+        
+        else if (daaStart.HasValue) 
+        {
+            events = events.Where(e => e.DateStart >= daaStart.Value).ToList();
+        }
+        
+        else if (dataCreate.HasValue) 
+        {
+            events = events.Where(e => e.DateStart <= dataCreate.Value).ToList();
+        }
+        
         return events.ToList();
     }
 
@@ -103,21 +130,6 @@ public class EventService : IEventService
         }
         await _eventRepository.DeleteAsync(id);
         return "Succesfuly deleted";
-    }
-
-    public async Task<List<Event>> GetEventsByStatusAsync(int categoryId)
-    {
-        var events = await _eventRepository.GetAllAsync();
-        events = events.Where(s => s.StatusId == (StatusId)categoryId).ToList();
-        return events.ToList();
-    }
-
-    public async Task<List<Event>> GetEventsByYearAsync(int year)
-    {
-        var events = await _eventRepository.GetAllAsync();
-        events = events.Where(s => s.DateCreate.Year == year).ToList();
-
-        return events.ToList();
     }
     
 }

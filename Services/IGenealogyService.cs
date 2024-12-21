@@ -7,9 +7,9 @@ public interface IGenealogyService
 {
     public Task<Genealogy> CreateGenealogyAsync(GenealogyDto genealogyDto);
     public Task<Genealogy> GetGenealogyByIdAsync(int id);
-    public Task<List<Genealogy>> GetGenealogyAsync();
+    public Task<List<Genealogy>> GetGenealogyAsync(int? year);
     public Task<Genealogy> UpdateGenealogyAsync(int id, GenealogyDto genealogyDto);
     public Task<string> DeleteGenealogyAsync(int id);
-    public Task<List<Genealogy>> GetEventsByYearAsync(int year);
+    
 
 }

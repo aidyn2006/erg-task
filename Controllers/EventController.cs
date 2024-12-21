@@ -22,15 +22,15 @@ public class EventController : Controller
     [SwaggerResponse(200, Description = "Successful response with a list of events.")]
     [SwaggerResponse(204, Description = "No content - no events found.")]
     [SwaggerResponse(500, Description = "Internal server error.")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] int? year,[FromQuery] int? status, 
+        [FromQuery] DateTime? dateStart,[FromQuery] DateTime? dateCreate)
     {
-        var supplies = await _eventService.GetEventsAsync();
+        var supplies = await _eventService.GetEventsAsync(year, status, dateStart, dateCreate);
 
         if (supplies == null || !supplies.Any())
         {
             return NoContent();
         }
-
         return Ok(supplies);
     }
 
@@ -89,22 +89,5 @@ public class EventController : Controller
     {
         return await _eventService.DeleteEventAsync(id);
     }
-    [HttpGet("{categoryId}")]
-    [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-    [SwaggerResponse(204, Description = "Events deleted successfully.")]
-    [SwaggerResponse(404, Description = "Event not found.")]
-    [SwaggerResponse(500, Description = "Internal server error.")]
-    public async Task<List<Event>> GetEventByStatusIdAsync([FromRoute] int categoryId)
-    {
-        return _eventService.GetEventsByStatusAsync(categoryId).Result;
-    }
-    [HttpGet("{year}")]
-    [SwaggerOperation(Summary = "This operation deletes a event by ID.")]
-    [SwaggerResponse(204, Description = "Events deleted successfully.")]
-    [SwaggerResponse(404, Description = "Event not found.")]
-    [SwaggerResponse(500, Description = "Internal server error.")]
-    public async Task<List<Event>> GetEventByYearIdAsync([FromRoute] int year)
-    {
-        return _eventService.GetEventsByYearAsync(year).Result;
-    }
+    
 }

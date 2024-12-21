@@ -52,14 +52,14 @@ public class PackageService : IPackageService
 
         return byId;    }
 
-    public async Task<List<Package>> GetPackageAsync()
+    public async Task<List<Package>> GetPackageAsync(int? type,int? status)
     {
-        var events=await _packageRepository.GetAllAsync();
-        if (events == null)
+        var typeId=await _packageRepository.GetAllAsync(type,status);
+        if (typeId == null)
         {
             throw new NotFoundException("There was no package found");
         }
-        return events.ToList();
+        return typeId.ToList();
     }
 
     public async Task<Package> UpdatePackageAsync(int id, PackageDto packageDto)
@@ -97,18 +97,5 @@ public class PackageService : IPackageService
         }
         await _packageRepository.DeleteAsync(id);
         return "Succesfuly deleted";    }
-
-    public async Task<List<Package>> GetPackagesByStatusAsync(int status)
-    {
-        var events = await _packageRepository.GetAllAsync();
-        events = events.Where(s => s.StatusId == (StatusId)status).ToList();
-
-        return events.ToList();
-    }
-
-    public async Task<List<Package>> GetPackageByTypeIdAsync(int type)
-    {
-        var events = await _packageRepository.GetAllAsync();
-        events = events.Where(s => s.TypeId == (TypeId)type).ToList();
-        return events.ToList();    }
+    
 }
