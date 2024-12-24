@@ -231,6 +231,32 @@
         }
       }
     },
+    "/join/{id}": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/Genealogy": {
       "get": {
         "tags": [
@@ -1104,7 +1130,7 @@
           "trainRequest": {
             "$ref": "#/components/schemas/CreateTrainRequest"
           },
-          "transportInformation": {
+          "transportInformations": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TransportInformation"

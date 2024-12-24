@@ -10,7 +10,7 @@ public class Invoice
     public DateTime DateShipping { get; set; }
     public DateTime DateCreate { get; set; }
     public TypeId TypeId { get; set; }
-    public ICollection<InvoiceHistory> InvoiceHistories { get; set; } = new List<InvoiceHistory>();
-    public ICollection<Event> Events { get; set; } = new List<Event>();
+    public virtual ICollection<InvoiceHistory> InvoiceHistories { get; set; } = new List<InvoiceHistory>();
+    public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
 }

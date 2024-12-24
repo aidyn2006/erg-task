@@ -12,13 +12,20 @@ public class EventService : IEventService
 {
     private readonly IEventRepository _eventRepository;
     private readonly IEventHistoryRepository _eventHistoryRepository;
+    private readonly ISupplyService _supplyService;
+    private readonly IInvoiceService _invoiceService;
+    private readonly IPackageService _packageService;
     private readonly IMapper _mapper;
 
-    public EventService(IEventRepository eventRepository, IMapper mapper, IEventHistoryRepository eventHistoryRepository)
+    public EventService(IEventRepository eventRepository, IEventHistoryRepository eventHistoryRepository, 
+        ISupplyService supplyService, IInvoiceService invoiceService, IMapper mapper,IPackageService packageService)
     {
         _eventRepository = eventRepository;
-        _mapper = mapper;
         _eventHistoryRepository = eventHistoryRepository;
+        _supplyService = supplyService;
+        _invoiceService = invoiceService;
+        _mapper = mapper;
+        _packageService= packageService;
     }
 
     public async Task<Event> CreateEventAsync(EventDto eventToCreate)
@@ -131,5 +138,35 @@ public class EventService : IEventService
         await _eventRepository.DeleteAsync(id);
         return "Succesfuly deleted";
     }
-    
+
+    /*public async Task<EventJoins> GetJoins(int id)
+    {
+        var events = await _eventRepository.GetByIdAsync(id);
+        if (events == null)
+        {
+            throw new NotFoundException($"Event with id: {id} was not found");
+        }
+
+        int num = events.SupplyId.Value;
+        int supplyId = events.InvoiceId.Value;
+        int package = events.PackageId.Value;
+
+        var supplyTask = events.SupplyId.HasValue ? _supplyService.GetSupplyByIdAsync(events.SupplyId.Value) : Task.FromResult<Supply>(null);
+        Thread.Sleep(3000);
+        var invoiceTask = events.InvoiceId.HasValue ? _invoiceService.GetInvoiceByIdAsync(events.InvoiceId.Value) : Task.FromResult<Invoice>(null);
+        Thread.Sleep(3000);
+        var packageTask=events.PackageId.HasValue? _packageService.GetPackageByIdAsync(events.PackageId.Value) : Task.FromResult<Package>(null);
+
+
+        return new EventJoins()
+        {
+            Event = events,
+            Supply = supplyTask.Result,
+            Invoice = invoiceTask.Result,
+            Package=packageTask.Result
+        };
+    }*/
+
+
+     
 }

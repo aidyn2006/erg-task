@@ -10,5 +10,6 @@ public interface IEventService
     public Task<List<Event>> GetEventsAsync(int? year, int? status, DateTime? daaStart, DateTime? dataCreate);
     public Task<Event> UpdateEventAsync(int id, EventDto eventToUpdate);
     public Task<string> DeleteEventAsync(int id);
-    
+    // public  Task<EventJoins> GetJoins(int id);
+
 }

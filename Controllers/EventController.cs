@@ -90,4 +90,13 @@ public class EventController : Controller
         return await _eventService.DeleteEventAsync(id);
     }
     
+    // [HttpGet("/join/{id}")]
+    // [SwaggerOperation(Summary = "This operation gets all joins of a event by ID.")]
+    // [SwaggerResponse(404, Description = "Event joins not found.")]
+    // [SwaggerResponse(500, Description = "Internal server error.")]
+    // public async Task<EventJoins> get([FromRoute] int id)
+    // {
+    //     return await _eventService.GetJoins(id);
+    // }
+    
 }

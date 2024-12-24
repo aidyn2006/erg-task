@@ -26,10 +26,15 @@ public class PackageRepository : IPackageRepository
 
     public async Task<Package> GetByIdAsync(int id)
     {
-        return await _context.Packages
+        var res= await _context.Packages
             .Include(s => s.Events)
+            .ThenInclude(p=>p.Invoice)
+            .Include(p=>p.Events)
+            .ThenInclude(p=>p.Supply)
             .Include(p => p.Packages) 
             .FirstOrDefaultAsync(p => p.Id == id);
+
+        return res;
     }
 
     public async Task AddAsync(Package package)

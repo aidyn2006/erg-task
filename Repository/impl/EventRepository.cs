@@ -24,6 +24,8 @@ public class EventRepository : IEventRepository
     {
         return await _context.Events
             .Include(g=>g.EventHistories)
+            .Include(e=>e.Supply)
+            .Include(e=>e.Invoice)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 

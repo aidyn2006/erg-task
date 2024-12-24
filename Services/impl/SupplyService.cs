@@ -39,7 +39,8 @@ public class SupplyService : ISupplyService
         {
             throw new NotFoundException($"Supply with id: {id} was not found");
         }
-        return byId;      }
+        return byId;      
+    }
 
     
     public async Task<List<Supply>> GetSupplyAsync(int? year)

@@ -18,7 +18,7 @@ public class Event
     public float? Final_Dimension_X { get; set; }
     public string? Comment { get; set; }
     public ICollection<EventHistory> EventHistories { get; set; } = new List<EventHistory>();
+    public virtual Invoice? Invoice { get; set; }
+    public virtual Supply? Supply { get; set; }
     
-
-
 }

@@ -1075,5 +1075,32 @@
         "StatusCode": 500
       }
     ]
+  },
+  {
+    "ContainingType": "ERG_Task.Controllers.EventController",
+    "Method": "get",
+    "RelativePath": "join/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
+      }
+    ]
   }
 ]

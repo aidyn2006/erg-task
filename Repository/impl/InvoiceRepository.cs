@@ -16,7 +16,7 @@ public class InvoiceRepository : IInvoiceRepository
     public async Task<IEnumerable<Invoice>> GetAllAsync()
     {
         return await _context.Invoices
-            .Include(t => t.Events)
+            // .Include(t => t.Events)
             .Include(t => t.InvoiceHistories)
             .ToListAsync();
     }
@@ -24,7 +24,7 @@ public class InvoiceRepository : IInvoiceRepository
     public async Task<Invoice?> GetByIdAsync(int id)
     {
         return await _context.Invoices
-            .Include(t => t.Events)
+            // .Include(t => t.Events)
             .Include(t => t.InvoiceHistories)
             .FirstOrDefaultAsync(p => p.Id == id);
     }

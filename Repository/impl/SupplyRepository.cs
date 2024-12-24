@@ -16,14 +16,14 @@ public class SupplyRepository : ISupplyRepository
     public async Task<IEnumerable<Supply>> GetAllAsync()
     {
         return await _context.Supplies
-            .Include(s => s.Events) 
+            // .Include(s => s.Events) 
             .ToListAsync();
     }
 
     public async Task<Supply> GetByIdAsync(int id)
     {
         return await _context.Supplies
-            .Include(s => s.Events) 
+            // .Include(s => s.Events) 
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 

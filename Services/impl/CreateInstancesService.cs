@@ -33,7 +33,7 @@ public class CreateInstancesService : ICreateInstancesService
         {
             try
             {
-                var transportInfo = createInstancesRequest.transportInformation?.FirstOrDefault();
+                var transportInfo = createInstancesRequest.TransportInformations?.FirstOrDefault();
                 if (transportInfo == null)
                 {
                     throw new InvalidOperationException("Transport information is missing.");
@@ -68,7 +68,6 @@ public class CreateInstancesService : ICreateInstancesService
                 throw; 
             }
         }
-
-        return createInstancesRequest;
+        return createInstancesRequest;  
     }
 }

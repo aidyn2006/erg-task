@@ -108,4 +108,15 @@ public class TrainService : ITrainService
         await _trainRepository.DeleteAsync(id);
         return "Succesfuly deleted";
     }
+
+    // public Task<Train> GetAllJoinsAsync(int id)
+    // {
+    //     var existingEvent = _trainRepository.GetByIdAsync(id);
+    //     if (existingEvent == null)
+    //     {
+    //         throw new NotFoundException($"train with id: {id} was not found.");
+    //     }
+    //
+    //     return existingEvent;
+    // }
 }

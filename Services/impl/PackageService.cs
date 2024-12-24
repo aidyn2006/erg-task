@@ -97,5 +97,13 @@ public class PackageService : IPackageService
         }
         await _packageRepository.DeleteAsync(id);
         return "Succesfuly deleted";    }
-    
+
+    // public Task<Package> GetJoin(int id)
+    // {
+    //     var existingEvent = _packageRepository.GetByIdAsync(id);
+    //     if (existingEvent == null)
+    //     {
+    //         throw new NotFoundException($"Event with id: {id} was not found.");
+    //     }    
+    // }
 }
