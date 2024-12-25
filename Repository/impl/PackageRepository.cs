@@ -28,9 +28,9 @@ public class PackageRepository : IPackageRepository
     {
         var res= await _context.Packages
             .Include(s => s.Events)
-            .ThenInclude(p=>p.Invoice)
-            .Include(p=>p.Events)
-            .ThenInclude(p=>p.Supply)
+            // .ThenInclude(p=>p.Invoice)
+            // .Include(p=>p.Events)
+            // .ThenInclude(p=>p.Supply)
             .Include(p => p.Packages) 
             .FirstOrDefaultAsync(p => p.Id == id);
 

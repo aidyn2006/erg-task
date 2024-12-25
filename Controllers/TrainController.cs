@@ -17,15 +17,18 @@ public class TrainController : Controller
         _trainService = trainService;
     }
     
-    
+
         [HttpGet]
         [SwaggerOperation(Summary = "This operation retrieves all trains.")]
         [SwaggerResponse(200, Description = "Successful response with a list of trains.")]
         [SwaggerResponse(204, Description = "No content - no trains found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetAll([FromQuery] int? year, [FromQuery] int? status)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] DateTime? dateStart,
+            [FromQuery] DateTime? dateEnd , 
+            [FromQuery] int[]? status)
         {
-            var supplies = await _trainService.GetTrainAsync(year,status);
+            var supplies = await _trainService.GetTrainAsync(dateStart,dateEnd,status);
 
             if (supplies == null || !supplies.Any())
             {
@@ -39,7 +42,7 @@ public class TrainController : Controller
         [SwaggerResponse(200, Description = "Successful response with the train object.")]
         [SwaggerResponse(404, Description = "Train not found.")]
         [SwaggerResponse(500, Description = "Internal server error.")]
-        public async Task<IActionResult> GetEventById([FromRoute] int id )
+        public async Task<IActionResult> GetEventById([FromRoute] int id)
         {
             var supply = await _trainService.GetTrainByIdAsync(id);
 

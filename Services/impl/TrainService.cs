@@ -48,11 +48,10 @@ public class TrainService : ITrainService
         {
             throw new NotFoundException($"Train with id: {id} was not found");
         }
-
         return byId;
     }
 
-    public async Task<List<Train>> GetTrainAsync(int? year,int? status)
+    public async Task<List<Train>> GetTrainAsync(DateTime? dateStart, DateTime? dateEnd, int[]? status)
     {
         var trains = await _trainRepository.GetAllAsync();
         if (trains == null)
@@ -60,14 +59,18 @@ public class TrainService : ITrainService
             throw new NotFoundException("There was no trains found");
         }
 
-        if (year.HasValue)
+        if (dateStart.HasValue && dateEnd.HasValue)
         {
-            trains=trains.Where(e=>e.DateCreate.Year==year.Value).ToList();
+            trains = trains.Where(e => e.DateCreate.Date >= dateStart.Value.Date && e.DateCreate.Date <= dateEnd.Value.Date).ToList();
         }
 
-        if (status.HasValue)
+        if (status != null && status.Length!=0)
         {
-         trains=trains.Where(e=>e.TrainStatusId==(TrainStatusId)status).ToList();   
+            trains = trains.Where(e => status.Contains((int)e.TrainStatusId)).ToList();
+        }
+        else
+        {
+            trains = trains.Where(t => t.TrainStatusId != TrainStatusId.УДАЛЕН);
         }
         return trains.ToList();
     }
