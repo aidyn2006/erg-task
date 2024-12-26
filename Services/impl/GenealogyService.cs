@@ -15,9 +15,12 @@ public class GenealogyService : IGenealogyService
     private readonly IEventRepository _eventRepository;
     private readonly IMapper _mapper;
 
-    public GenealogyService(IGenealogyRepository genealogyRepository, IMapper mapper)
+    
+
+    public GenealogyService(IGenealogyRepository genealogyRepository, IEventRepository eventRepository, IMapper mapper)
     {
         _genealogyRepository = genealogyRepository;
+        _eventRepository = eventRepository;
         _mapper = mapper;
     }
 

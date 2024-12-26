@@ -7,6 +7,7 @@ public class Genealogy
     public long? ChildEventId { get; set; }
     public float DimensionX { get; set; }
     public DateTime DateCreate { get; set; }
+    
     public Event EventParent { get; set; }
     public Event EventChild { get; set; }
 }
