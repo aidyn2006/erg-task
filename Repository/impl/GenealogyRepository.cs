@@ -1,3 +1,4 @@
+using System.Collections;
 using ERG_Task.Data;
 using ERG_Task.Models;
 using Microsoft.EntityFrameworkCore;
@@ -49,4 +50,16 @@ public class GenealogyRepository : IGenealogyRepository
             await _context.SaveChangesAsync();
         }    
     }
+
+    public async Task<List<Genealogy>> GetGenealogiesByChildIdAsync(int id)
+    {
+        var genealogies = await _context.Genealogy
+            .Where(g => g.ChildEventId == id)
+            .ToListAsync();
+
+        return genealogies;
+    }
+
+    
+
 }

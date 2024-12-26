@@ -9,4 +9,6 @@ public interface IEventRepository
     Task AddAsync(Event events);
     Task UpdateAsync(Event events);
     Task DeleteAsync(int id);
+    Task AddEventsAsync(List<Event> events);
+
 }

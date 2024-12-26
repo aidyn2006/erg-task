@@ -25,11 +25,12 @@ namespace ERG_Task.Controllers
         public async Task<IActionResult> GetAll([FromQuery] int? year)
         {
             var supplies = await _supplyService.GetSupplyAsync(year);
-
+           
             if (supplies == null || !supplies.Any())
             {
                 return NoContent();
             }
+            Dictionary<string,int> suppliesDictionary = new Dictionary<string, int>();
             return Ok(supplies);
         }
 

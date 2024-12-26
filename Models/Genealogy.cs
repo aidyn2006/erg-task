@@ -9,6 +9,4 @@ public class Genealogy
     public DateTime DateCreate { get; set; }
     public Event EventParent { get; set; }
     public Event EventChild { get; set; }
-
-    
 }

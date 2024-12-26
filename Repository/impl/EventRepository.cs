@@ -49,4 +49,13 @@ public class EventRepository : IEventRepository
             await _context.SaveChangesAsync();
         }    
     }
+    public async Task AddEventsAsync(List<Event> events)
+    {
+        if (events == null || !events.Any())
+            throw new ArgumentNullException(nameof(events));
+
+        await _context.Events.AddRangeAsync(events);
+        await _context.SaveChangesAsync();
+    }
+    
 }
