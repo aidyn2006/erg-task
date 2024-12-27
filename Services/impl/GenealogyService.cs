@@ -96,108 +96,173 @@ public class GenealogyService : IGenealogyService
 
 
 
+    
 
-   public async Task<Genealogy> CreateNewGenealogyAsync(EventDto eventDto, float dimensionX)
+    public async Task<Genealogy> CreateNewGenealogyAsync(int eventId, float dimensionX)
     {
-        if (eventDto == null)
-            throw new ArgumentNullException(nameof(eventDto));
+        if (eventId <= 0)
+            throw new ArgumentException("Invalid event ID.");
     
-        var eventEntity = _mapper.Map<Event>(eventDto);
-        eventEntity.DateCreate = DateTime.UtcNow;
-        eventEntity.DateStart = DateTime.UtcNow;
-        eventEntity.DateEvent = DateTime.UtcNow;
-        eventEntity.Initial_Dimension_X = dimensionX;
-    
+        var parentEvent = await _eventRepository.GetByIdAsync(eventId);
         
-        await _eventRepository.AddAsync(eventEntity);
-    
-        var genealogy = new Genealogy
+        var childEvent = new Event
         {
-            ParentEventId = null,  
-            ChildEventId = eventEntity.Id,
-            DimensionX = dimensionX,
-            DateCreate = DateTime.UtcNow
+            ProductId = ProductId.ВЗВЕШЕН,
+            PackageId = 21,
+            InvoiceId = 11,
+            StatusId = StatusId.В_ПУТИ,
+            SupplyId = 7,
+            DateCreate = DateTime.UtcNow,
+            DateStart = DateTime.UtcNow,
+            DateEvent = DateTime.UtcNow,
+            Initial_Dimension_X = 100,
+            Final_Dimension_X = 500,
+            Comment = "Nothing to write",
+            Name = "Child Event",
         };
+        await _eventRepository.AddAsync(childEvent);
     
-        
-        await _genealogyRepository.AddAsync(genealogy);
-    
-        return genealogy;
-    }
-
-    public async Task<Genealogy> CreateListEvent(List<EventDto> eventDtoList, float dimensionX)
-    {
-        if (eventDtoList == null || !eventDtoList.Any())
-            throw new ArgumentNullException(nameof(eventDtoList));
-    
-        var events = _mapper.Map<List<Event>>(eventDtoList);
-    
-        foreach (var eventEntity in events)
+        if (dimensionX > 0)
         {
-            eventEntity.DateCreate = DateTime.UtcNow;
-            eventEntity.DateStart = DateTime.UtcNow;
-            eventEntity.DateEvent = DateTime.UtcNow;
-            eventEntity.Initial_Dimension_X = dimensionX;
+            if (parentEvent.Final_Dimension_X >= dimensionX)
+            {
+                parentEvent.Final_Dimension_X -= dimensionX;
+                await _eventRepository.UpdateAsync(parentEvent);
+            }
+            else
+            {
+                throw new ArgumentException("DimensionX больше чем у Парент Файнал Дайменшна.");
+            }
         }
     
-        
-        await _eventRepository.AddEventsAsync(events);
-    
-        
         var genealogy = new Genealogy
         {
-            ParentEventId = null, 
-            ChildEventId = events.Last().Id,
+            ParentEventId = eventId,
+            ChildEventId = childEvent.Id,
             DimensionX = dimensionX,
-            DateCreate = DateTime.UtcNow
+            DateCreate = DateTime.UtcNow,
+            EventParent = parentEvent,
+            EventChild = childEvent
         };
     
-        
         await _genealogyRepository.AddAsync(genealogy);
     
         return genealogy;
     }
+
+    public async Task<List<Genealogy>> CreateGenealogyListAsync(int[] eventIds, float dimensionX)
+    {
+        if (eventIds == null || !eventIds.Any())
+            throw new ArgumentNullException(nameof(eventIds));
+    
+        var genealogies = new List<Genealogy>();
+    
+        var childEvent = new Event
+        {
+            ProductId = ProductId.ВЗВЕШЕН,
+            PackageId = 21,
+            InvoiceId = 11,
+            StatusId = StatusId.В_ПУТИ,
+            SupplyId = 7,
+            DateCreate = DateTime.UtcNow,
+            DateStart = DateTime.UtcNow,
+            DateEvent = DateTime.UtcNow,
+            Initial_Dimension_X = 100,
+            Final_Dimension_X = 500,
+            Comment = "Nothing to write",
+            Name = "Child Event",
+        };
+        await _eventRepository.AddAsync(childEvent);
+    
+        foreach (var eventId in eventIds)
+        {
+            var parentEvent = await _eventRepository.GetByIdAsync(eventId);
+    
+            if (dimensionX > 0)
+            {
+                if (parentEvent.Final_Dimension_X >= dimensionX)
+                {
+                    parentEvent.Final_Dimension_X -= dimensionX;
+                    await _eventRepository.UpdateAsync(parentEvent);
+                }
+                else
+                {
+                    throw new ArgumentException("DimensionX больше чем у Парент Файнал Дайменшна.");
+                }
+            }
+    
+            var genealogy = new Genealogy
+            {
+                ParentEventId = eventId,
+                ChildEventId = childEvent.Id,
+                DimensionX = dimensionX,
+                DateCreate = DateTime.UtcNow,
+                EventParent = parentEvent,
+                EventChild = childEvent
+            };
+    
+            await _genealogyRepository.AddAsync(genealogy);
+            genealogies.Add(genealogy);
+        }
+    
+        return genealogies;
+    }
+
 
     public async Task<string> DeleteEventAsync(int id, bool isHardDelete)
     {
         var eventEntity = await _eventRepository.GetByIdAsync(id);
         if (eventEntity == null)
             throw new NotFoundException($"Event with id: {id} was not found.");
-
+    
+        var genealogies = await _genealogyRepository.GetGenealogiesByChildIdAsync(id);
+    
         if (isHardDelete)
         {
             
-            var genealogies = await _genealogyRepository.GetGenealogiesByChildIdAsync(id);
-
             if (genealogies != null && genealogies.Any())
             {
                 foreach (var genealogy in genealogies)
                 {
-                    
-                    if (genealogy.ParentEventId != null)
+                    if (genealogy.ParentEventId.HasValue)
                     {
-                        var parentEvent = await _genealogyRepository.GetByIdAsync((int)genealogy.ParentEventId);
+                        var parentEvent = await _eventRepository.GetByIdAsync(Convert.ToInt32(genealogy.ParentEventId.Value));
                         if (parentEvent != null)
                         {
-                            parentEvent.DimensionX += genealogy.DimensionX;
-                            await _genealogyRepository.UpdateAsync(parentEvent); 
+                            parentEvent.Final_Dimension_X += (genealogy.DimensionX)/genealogies.Count();
+                            await _eventRepository.UpdateAsync(parentEvent);
                         }
                     }
-
-                    await _eventRepository.DeleteAsync(id); 
+                    await _genealogyRepository.DeleteAsync(genealogy.Id);
                 }
             }
-
-            await _eventRepository.DeleteAsync(id);  
+            await _eventRepository.DeleteAsync(eventEntity.Id);
         }
         else
         {
+            if (genealogies != null && genealogies.Any())
+            {
+                foreach (var genealogy in genealogies)
+                {
+                    if (genealogy.ParentEventId.HasValue)
+                    {
+                        var parentEvent = await _eventRepository.GetByIdAsync(Convert.ToInt32(genealogy.ParentEventId.Value));
+                        if (parentEvent != null)
+                        {
+                            parentEvent.Final_Dimension_X += genealogy.DimensionX;
+                            await _eventRepository.UpdateAsync(parentEvent);
+                        }
+                    }
+                }
+            }
+    
             eventEntity.StatusId = StatusId.УДАЛЕН; 
-            await _eventRepository.UpdateAsync(eventEntity); 
+            await _eventRepository.UpdateAsync(eventEntity);
         }
-
+    
         return "Event successfully deleted.";
     }
+
 
 
 }

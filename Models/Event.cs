@@ -4,7 +4,7 @@ namespace ERG_Task.Models;
 
 public class Event 
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public ProductId ProductId { get; set; }
     public int? PackageId { get; set; }
     public int? InvoiceId { get; set; }

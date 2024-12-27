@@ -96,18 +96,18 @@ public class GenealogyController : Controller
     [SwaggerResponse(201, Description = "Created genealogy successfully.")]
     [SwaggerResponse(404, Description = "Genealogy not found.")]
     [SwaggerResponse(500, Description = "Internal server error.")]
-    public async Task<IActionResult> CreatePost([FromBody] EventDto genealogyDto, [FromQuery] float dimension)
+    public async Task<IActionResult> CreatePost([FromQuery] int evenId, [FromQuery] float dimension)
     {
-        return  Ok(_genealogyService.CreateNewGenealogyAsync(genealogyDto,dimension));
+        return  Ok( await _genealogyService.CreateNewGenealogyAsync(evenId,dimension));
     }
     [HttpPost("/list")]
     [SwaggerOperation(Summary = "This post action creates a new events and genealogy.")]
     [SwaggerResponse(201, Description = "Created genealogy successfully.")]
     [SwaggerResponse(404, Description = "Genealogy not found.")]
     [SwaggerResponse(500, Description = "Internal server error.")]
-    public async Task<IActionResult> CreatePosts([FromBody] List<EventDto> genealogyDto, [FromQuery] float dimension)
+    public async Task<IActionResult> CreatePosts([FromQuery] int[]  eventIds, [FromQuery] float dimension)
     {
-        return  Ok(_genealogyService.CreateListEvent(genealogyDto, dimension));
+        return  Ok( await _genealogyService.CreateGenealogyListAsync(eventIds, dimension));
     }
 
     [HttpDelete("/del/{id}")]
@@ -116,7 +116,7 @@ public class GenealogyController : Controller
     [SwaggerResponse(500, Description = "Internal server error.")]
     public async Task<IActionResult> DeletePost([FromRoute] int id, bool isHardDelete)
     {
-        return Ok(_genealogyService.DeleteEventAsync(id, isHardDelete));
+        return Ok(await _genealogyService.DeleteEventAsync(id, isHardDelete));
     }
 
 

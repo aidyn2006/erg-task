@@ -6,7 +6,7 @@ public class Supply
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime DateCreate { get; set; }
-    public ICollection<Event> Events { get; set; } = new List<Event>();
+    // public ICollection<Event> Events { get; set; } = new List<Event>();
     
     
 }
