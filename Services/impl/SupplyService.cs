@@ -11,11 +11,19 @@ public class SupplyService : ISupplyService
 {
     private readonly ISupplyRepository _supplyRepository;
     private readonly IMapper _mapper;
+    private IMapper object1;
+    private ISupplyRepository object2;
 
     public SupplyService(ISupplyRepository supplyRepository, IMapper mapper)
     {
         _supplyRepository = supplyRepository;
         _mapper = mapper;
+    }
+
+    public SupplyService(IMapper object1, ISupplyRepository object2)
+    {
+        this.object1 = object1;
+        this.object2 = object2;
     }
 
     public async Task<Supply> CreateSupplyAsync(SupplyDto supplyDto)
@@ -31,7 +39,7 @@ public class SupplyService : ISupplyService
 
         return supply;    
     }
-
+    
     public async Task<Supply> GetSupplyByIdAsync(int id)
     {
         var byId=await _supplyRepository.GetByIdAsync(id);
@@ -83,7 +91,5 @@ public class SupplyService : ISupplyService
         return "Succesfuly deleted";    
     }
     
-    
 
-    
 }
